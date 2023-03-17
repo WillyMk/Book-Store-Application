@@ -29,31 +29,14 @@ public class AuthorService {
         author.setZipcode(z);
 
         Author a = authorRepo.save(author);
-        AuthorResponseDto authorResponseDto = new AuthorResponseDto();
-        authorResponseDto.setName(a.getName());
-        authorResponseDto.setId(a.getId());
-        authorResponseDto.setZipcodeName(a.getZipcode().getName());
-        return authorResponseDto;
+        return Author.mapAuthorToData(a);
 
     }
     public List<?> getAuthors() {
         List<Author> authors = authorRepo.findAll();
-        return authors.stream().map(a -> mapAuthorsToData(a)).collect(Collectors.toList());
+        return authors.stream().map(a -> Author.mapAuthorToData(a)).collect(Collectors.toList());
     }
 
-    private AuthorResponseDto mapAuthorsToData(Author a) {
-        AuthorResponseDto authorResponseDto = new AuthorResponseDto();
-        authorResponseDto.setId(a.getId());
-        authorResponseDto.setName(a.getName());
-        authorResponseDto.setZipcodeName(a.getZipcode().getName());
-        List<String> names = new ArrayList<>();
-        List<Book> books = a.getBooks();
-        for (Book book : books){
-            names.add(book.getName());
-        }
-        authorResponseDto.setBookNames(names);
-        return authorResponseDto;
-    }
     public Author getAuthor(Long id) {
         Optional<Author> author = authorRepo.findById(id);
 

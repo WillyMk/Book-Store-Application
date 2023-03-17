@@ -21,23 +21,12 @@ public class CategoryService {
 
         Category c = categoryRepo.save(category);
 
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-        categoryResponseDto.setId(c.getId());
-        categoryResponseDto.setName(c.getName());
-        return categoryResponseDto;
+        return Category.mapToData(c);
     }
 
     public List<?> getCategories() {
         List<Category> categories = categoryRepo.findAll();
-        return categories.stream().map(category -> mapCategoryToData(category)).collect(Collectors.toList());
-    }
-
-    private CategoryResponseDto mapCategoryToData(Category category) {
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-        categoryResponseDto.setId(category.getId());
-        categoryResponseDto.setName(category.getName());
-        categoryResponseDto.setBooks(category.getBooks());
-        return categoryResponseDto;
+        return categories.stream().map(category -> Category.mapToData(category)).collect(Collectors.toList());
     }
 
     public Category getCategory(Long id) {

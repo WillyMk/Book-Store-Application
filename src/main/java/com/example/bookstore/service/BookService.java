@@ -45,34 +45,12 @@ public class BookService {
 
         Book book1 = bookRepo.save(book);
 
-        BookResponseDto bookResponseDto = new BookResponseDto();
-        bookResponseDto.setId(book1.getId());
-        bookResponseDto.setName(book1.getName());
-        bookResponseDto.setCategoryName(book1.getCategory().getName());
-        return getBookResponseDto(book1, bookResponseDto);
+        return Book.mapBookToData(book1);
     }
 
     public List<?> getBooks() {
         List<Book> books = bookRepo.findAll();
-        return books.stream().map(book -> mapBookToData(book)).collect(Collectors.toList());
-    }
-
-    private BookResponseDto mapBookToData(Book book) {
-        BookResponseDto bookResponseDto = new BookResponseDto();
-        bookResponseDto.setId(book.getId());
-        bookResponseDto.setName(book.getName());
-        bookResponseDto.setCategoryName(book.getCategory().getName());
-        return getBookResponseDto(book, bookResponseDto);
-    }
-
-    private BookResponseDto getBookResponseDto(Book book1, BookResponseDto bookResponseDto) {
-        List<String> authorNames = new ArrayList<>();
-        List<Author> authors = book1.getAuthors();
-        for(Author a : authors){
-            authorNames.add(a.getName());
-        }
-        bookResponseDto.setAuthorNames(authorNames);
-        return bookResponseDto;
+        return books.stream().map(book -> Book.mapBookToData(book)).collect(Collectors.toList());
     }
 
     public Book getBook(Long id) {

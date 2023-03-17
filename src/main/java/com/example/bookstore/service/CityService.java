@@ -31,13 +31,13 @@ public class CityService {
         return cityResponseDto;
     }
 
-    public List<?> getCity(Integer page, Integer pageSize) {
+    public Page<?> getCity(Integer page, Integer pageSize) {
         if (page < 1) {
             page = 1;
         }
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<City> cities = cityRepo.findAll(pageable);
-        return cities.stream().map(c -> mapToResponseDto(c)).collect(Collectors.toList());
+
+        return cityRepo.findAll(pageable).map(c -> mapToResponseDto(c));
     }
 
     private CityResponseDto mapToResponseDto(City c) {

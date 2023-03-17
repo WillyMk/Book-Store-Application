@@ -26,25 +26,12 @@ public class ZipcodeService {
         zipcode.setCity(c);
 
         Zipcode z = zipcodeRepo.save(zipcode);
-
-        ZipcodeResponseDto zip = new ZipcodeResponseDto();
-        zip.setId(z.getId());
-        zip.setName(z.getName());
-        zip.setCityName(z.getCity().getName());
-        return zip;
+        return Zipcode.mapZipcodeToData(z);
     }
 
     public List<?> getZipcodes() {
         List<Zipcode> zipcodes = zipcodeRepo.findAll();
-        return zipcodes.stream().map(z -> mapZipcodeToData(z)).collect(Collectors.toList());
-    }
-
-    private ZipcodeResponseDto mapZipcodeToData(Zipcode z) {
-        ZipcodeResponseDto zipcode = new ZipcodeResponseDto();
-        zipcode.setName(z.getName());
-        zipcode.setId(z.getId());
-        zipcode.setCityName(z.getCity().getName());
-        return zipcode;
+        return zipcodes.stream().map(z -> Zipcode.mapZipcodeToData(z)).collect(Collectors.toList());
     }
 
 
